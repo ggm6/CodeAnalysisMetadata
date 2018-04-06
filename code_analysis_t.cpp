@@ -29,7 +29,8 @@ int main() {
         assert(code_analysis(request) == false);
         
         // Garrett's Tests
-        std::cout << std::endl << "Separater for Collard's blank tests and my own..." << std::endl;
+        std::cout << std::endl << "---Separater for Collard's blank tests and my own---" << std::endl;
+        std::cout << "code_analysis..." << std::endl;
         std::cout << "Incorrect: " << std::endl;
         request.option_filename="bro.cweojre";
         assert(code_analysis(request)==false);
@@ -38,15 +39,23 @@ int main() {
         assert(code_analysis(request)==false);
         std::cout << std::endl;
         
-        std::cout << "Language from filename: " << std::endl;
+        std::cout << "Language from filename..." << std::endl;
 		std::cout << analysis_filename(request) << std::endl;
 		request.option_filename="";
 		request.entry_filename="data";
 		request.given_filename="howdy.c";
 		std::cout << analysis_filename(request) << std::endl;
 		request.entry_filename="me.java";
-		std::cout << analysis_filename(request) << std::endl;
+		std::cout << analysis_filename(request) << std::endl << std::endl;
 		
+		std::cout << "Url... " << std::endl;
+		request.given_url="https://github.com/ggm6/CodeAnalysisMetadata";
+		request.option_url="www.bro.com";
+		std::cout << "With option_url: " << std::endl;
+		std::cout << analysis_url(request) << std::endl;
+		request.option_url="";
+		std::cout << "Without option_url: " << std::endl;
+		std::cout << analysis_url(request) << std::endl;
 		
     }
 
