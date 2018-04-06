@@ -23,9 +23,9 @@ bool code_analysis(const analysis_request& request) {
 
     auto language = analysis_language(request, filename);
     
-    if (language=="")
+    if (language=="" && get_language_from_filename(request.option_filename)=="")
 		std::cerr << "Extension not supported" << std::endl;
-	if (filename=="")
+	if (filename=="" && language=="")
 		std::cerr << "Using stdin requires a declared language" << std::endl;
 
     return false;
@@ -47,6 +47,8 @@ std::string analysis_filename(const analysis_request& request) {
  */
 std::string analysis_url(const analysis_request& request) {
 
+	if (request.option_url!="")
+		return request.option_url;
     return "";
 }
 
@@ -57,5 +59,7 @@ std::string analysis_url(const analysis_request& request) {
  */
 std::string analysis_language(const analysis_request& request, const std::string& filename) {
 
+	if (request.option_language!="")
+		return request.option_language;
     return "";
 }

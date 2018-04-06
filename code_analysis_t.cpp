@@ -6,6 +6,7 @@
 
 #include "code_analysis.hpp"
 
+#include <iostream>
 #include <string>
 #include <cassert>
 
@@ -26,6 +27,15 @@ int main() {
         assert(analysis_url(request) == "");
         assert(analysis_language(request, filename) == "");
         assert(code_analysis(request) == false);
+        
+        // Garrett's Tests
+        std::cout << std::endl << "Separater for Collard's blank tests and my own..." << std::endl;
+        std::cout << "Incorrect: " << std::endl;
+        request.option_filename="bro.cweojre";
+        assert(code_analysis(request)==false);
+        std::cout << "Correct (no error messages): " << std::endl;
+        request.option_filename="bro.cpp";
+        assert(code_analysis(request)==false);
     }
 
     return 0;
