@@ -25,7 +25,7 @@ bool code_analysis(const analysis_request& request) {
     
     if (language=="" && get_language_from_filename(request.option_filename)=="")
 		std::cerr << "Extension not supported" << std::endl;
-	if (filename=="" && language=="")
+	if (request.given_filename=="-" && filename=="" && language=="")
 		std::cerr << "Using stdin requires a declared language" << std::endl;
 
     return false;
@@ -36,8 +36,13 @@ bool code_analysis(const analysis_request& request) {
  * @retval filename
  */
 std::string analysis_filename(const analysis_request& request) {
-
-	return get_language_from_filename(request.option_filename);
+	
+	if (request.option_filename!="")
+		return get_language_from_filename(request.option_filename);
+	if (request.entry_filename=="data" && request.given_filename!="")
+		return get_language_from_filename(request.given_filename);
+	if (request.entry_filename!="")
+		return get_language_from_filename(request.entry_filename);
     return "";
 }
 

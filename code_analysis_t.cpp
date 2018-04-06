@@ -36,6 +36,16 @@ int main() {
         std::cout << "Correct (no error messages): " << std::endl;
         request.option_filename="bro.cpp";
         assert(code_analysis(request)==false);
+        std::cout << std::endl;
+        
+        std::cout << "Language from filename: " << std::endl;
+		std::cout << analysis_filename(request) << std::endl;
+		request.option_filename="";
+		request.entry_filename="data";
+		request.given_filename="howdy.c";
+		std::cout << analysis_filename(request) << std::endl;
+		request.entry_filename="me.java";
+		std::cout << analysis_filename(request) << std::endl;
     }
 
     return 0;
