@@ -39,9 +39,9 @@ std::string analysis_filename(const analysis_request& request) {
 	
 	if (request.option_filename!="")
 		return get_language_from_filename(request.option_filename);
-	if (request.entry_filename=="data" && request.given_filename!="")
+	if (request.option_filename=="" && request.entry_filename=="data" && request.given_filename!="")
 		return get_language_from_filename(request.given_filename);
-	if (request.entry_filename!="")
+	if (request.option_filename=="" && request.entry_filename!="")
 		return get_language_from_filename(request.entry_filename);
     return "";
 }
@@ -54,6 +54,8 @@ std::string analysis_url(const analysis_request& request) {
 
 	if (request.option_url!="")
 		return request.option_url;
+	if (request.given_url!="" && request.option_url=="")
+		return request.given_url;
     return "";
 }
 
