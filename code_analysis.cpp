@@ -38,11 +38,11 @@ bool code_analysis(const analysis_request& request) {
 std::string analysis_filename(const analysis_request& request) {
 	
 	if (request.option_filename!="")
-		return get_language_from_filename(request.option_filename);
+		return request.option_filename;
 	if (request.option_filename=="" && request.entry_filename=="data" && request.given_filename!="")
-		return get_language_from_filename(request.given_filename);
+		return request.given_filename;
 	if (request.option_filename=="" && request.entry_filename!="")
-		return get_language_from_filename(request.entry_filename);
+		return request.entry_filename;
     return "";
 }
 
@@ -68,5 +68,7 @@ std::string analysis_language(const analysis_request& request, const std::string
 
 	if (request.option_language!="")
 		return request.option_language;
+	else
+		return get_language_from_filename(filename);
     return "";
 }

@@ -29,7 +29,7 @@ int main() {
         assert(code_analysis(request) == false);
         
         // Garrett's Tests
-        std::cout << std::endl << "---Separater for Collard's blank tests and my own---" << std::endl;
+        std::cout << std::endl << "---Separater for Collard's blank tests and my own---" << std::endl << std::endl;
         std::cout << "code_analysis..." << std::endl;
         std::cout << "Incorrect: " << std::endl;
         request.option_filename="bro.cweojre";
@@ -39,7 +39,7 @@ int main() {
         assert(code_analysis(request)==false);
         std::cout << std::endl;
         
-        std::cout << "Language from filename..." << std::endl;
+        std::cout << "Filename..." << std::endl;
 		std::cout << analysis_filename(request) << std::endl;
 		request.option_filename="";
 		request.entry_filename="data";
@@ -55,8 +55,15 @@ int main() {
 		std::cout << analysis_url(request) << std::endl;
 		request.option_url="";
 		std::cout << "Without option_url: " << std::endl;
-		std::cout << analysis_url(request) << std::endl;
+		std::cout << analysis_url(request) << std::endl << std::endl;
 		
+		std::cout << "Language..." << std::endl;
+		request.option_language="C++";
+		std::cout << "With option_language: " << std::endl;
+		std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
+		request.option_language="";
+		std::cout << "Without option_language: " << std::endl;
+		std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
     }
 
     return 0;
