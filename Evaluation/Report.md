@@ -112,61 +112,61 @@
 
 ## Code
 % srcml code_analysis.cpp code_analysis_t.cpp -o project.xml
-% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='code_analysis']" project.xml | srcml
 
-    bool code_analysis(const analysis_request& request) {
-    
-        auto filename = analysis_filename(request);
-    
-        auto url = analysis_url(request);
-    
-        auto language = analysis_language(request, filename);
-        
-        if (language=="" && get_language_from_filename(request.option_filename)=="")
-    		std::cerr << "Extension not supported" << std::endl;
-    	if (request.given_filename=="-" && filename=="" && language=="")
-    		std::cerr << "Using stdin requires a declared language" << std::endl;
-    
-        return false;
-    }
+     1 bool code_analysis(const analysis_request& request) {
+     2 
+     3     auto filename = analysis_filename(request);
+     4 
+     5     auto url = analysis_url(request);
+     6 
+     7     auto language = analysis_language(request, filename);
+     8     
+     9     if (language=="" && get_language_from_filename(request.option_filename)=="")
+    10        std::cerr << "Extension not supported" << std::endl;
+    11     if (request.given_filename=="-" && filename=="" && language=="")
+    12        std::cerr << "Using stdin requires a declared language" << std::endl;
+    13 
+    14     return false;
+    15 }
 
-% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_filename']" project.xml | srcml
 
-    std::string analysis_filename(const analysis_request& request) {
-    	
-    	if (request.option_filename!="")
-    		return request.option_filename;
-    	if (request.option_filename=="" && request.entry_filename=="data" && request.given_filename!="")
-    		return request.given_filename;
-    	if (request.option_filename=="" && request.entry_filename!="")
-    		return request.entry_filename;
-        return "";
-    }
+     1 std::string analysis_filename(const analysis_request& request) {
+     2     
+     3     if (request.option_filename!="")
+     4        return request.option_filename;
+     5     if (request.option_filename=="" && request.entry_filename=="data" && request.given_filename!="")
+     6        return request.given_filename;
+     7     if (request.option_filename=="" && request.entry_filename!="")
+     8        return request.entry_filename;
+     9     return "";
+    10 }
 
-% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_url']" project.xml | srcml
 
-    std::string analysis_url(const analysis_request& request) {
-    
-    	if (request.option_url!="")
-    		return request.option_url;
-    	if (request.given_url!="" && request.option_url=="")
-    		return request.given_url;
-        return "";
-    }
+     1 std::string analysis_url(const analysis_request& request) {
+     2 
+     3     if (request.option_url!="")
+     4        return request.option_url;
+     5     if (request.given_url!="" && request.option_url=="")
+     6        return request.given_url;
+     7     return "";
+     8 }
 
-% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml | cat -v
+% srcml --xpath="//src:function[src:name='analysis_language']" project.xml | srcml
 
-    std::string analysis_language(const analysis_request& request, const std::string& filename) {
-    
-    	if (request.option_language!="")
-    		return request.option_language;
-    	else
-    		return get_language_from_filename(filename);
-        return "";
-    }
+     1 std::string analysis_language(const analysis_request& request, const std::string& filename) {
+     2 
+     3     if (request.option_language!="")
+     4        return request.option_language;
+     5     else
+     6        return get_language_from_filename(filename);
+     7     return "";
+     8 }
 
 ## Test Cases 
-% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml | cat -v
+% srcml code_analysis_t.cpp --xpath="//src:function[src:name='main']/src:block" | srcml
 
     {
     
@@ -198,30 +198,30 @@
             std::cout << std::endl;
             
             std::cout << "Filename..." << std::endl;
-    		std::cout << analysis_filename(request) << std::endl;
-    		request.option_filename="";
-    		request.entry_filename="data";
-    		request.given_filename="howdy.c";
-    		std::cout << analysis_filename(request) << std::endl;
-    		request.entry_filename="me.java";
-    		std::cout << analysis_filename(request) << std::endl << std::endl;
-    		
-    		std::cout << "Url... " << std::endl;
-    		request.given_url="https://github.com/ggm6/CodeAnalysisMetadata";
-    		request.option_url="www.bro.com";
-    		std::cout << "With option_url: " << std::endl;
-    		std::cout << analysis_url(request) << std::endl;
-    		request.option_url="";
-    		std::cout << "Without option_url: " << std::endl;
-    		std::cout << analysis_url(request) << std::endl << std::endl;
-    		
-    		std::cout << "Language..." << std::endl;
-    		request.option_language="C++";
-    		std::cout << "With option_language: " << std::endl;
-    		std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
-    		request.option_language="";
-    		std::cout << "Without option_language: " << std::endl;
-    		std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
+           std::cout << analysis_filename(request) << std::endl;
+           request.option_filename="";
+           request.entry_filename="data";
+           request.given_filename="howdy.c";
+           std::cout << analysis_filename(request) << std::endl;
+           request.entry_filename="me.java";
+           std::cout << analysis_filename(request) << std::endl << std::endl;
+           
+           std::cout << "Url... " << std::endl;
+           request.given_url="https://github.com/ggm6/CodeAnalysisMetadata";
+           request.option_url="www.bro.com";
+           std::cout << "With option_url: " << std::endl;
+           std::cout << analysis_url(request) << std::endl;
+           request.option_url="";
+           std::cout << "Without option_url: " << std::endl;
+           std::cout << analysis_url(request) << std::endl << std::endl;
+           
+           std::cout << "Language..." << std::endl;
+           request.option_language="C++";
+           std::cout << "With option_language: " << std::endl;
+           std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
+           request.option_language="";
+           std::cout << "Without option_language: " << std::endl;
+           std::cout << analysis_language(request,analysis_filename(request)) << std::endl;
         }
     
         return 0;
@@ -248,538 +248,321 @@
 ### Commit a2993d
 % git checkout -q a2993d  
 % make  
-error: The following untracked working tree files would be overwritten by checkout:
-	code_analysis.o
-	code_analysis_t
-	code_analysis_t.o
-	get_language_from_filename.o
-	get_language_from_filename_t
-	get_language_from_filename_t.o
-Please move or remove them before you switch branches.
-Aborting
 
-    g++ -std=c++11 -c code_analysis.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
+    commit a2993db4ef1c544f885db7f35449cb889023d09e
     Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
+    Date:   Thu Apr 5 18:40:47 2018 -0400
     
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
+        Adding error messages
     
+    diff --git a/code_analysis.cpp b/code_analysis.cpp
+    index b874829..ffc8a02 100644
+    --- a/code_analysis.cpp
+    +++ b/code_analysis.cpp
+    @@ -8,6 +8,7 @@
+     #include "get_language_from_filename.hpp"
+     
+     #include <string>
+    +#include <iostream>
+     
+     /** Generate source analysis based on the request
+      * @param request Data that forms the request
+    @@ -21,8 +22,11 @@ bool code_analysis(const analysis_request& request) {
+         auto url = analysis_url(request);
+     
+         auto language = analysis_language(request, filename);
+    -
+    -    // code analysis processing that is not yet implemented
+    +    
+    +    if (language=="")
+    +		std::cerr << "Extension not supported" << std::endl;
+    +	if (filename=="")
+    +		std::cerr << "Using stdin requires a declared language" << std::endl;
+     
+         return false;
+     }
+    @@ -33,6 +37,7 @@ bool code_analysis(const analysis_request& request) {
+      */
+     std::string analysis_filename(const analysis_request& request) {
+     
+    +	return get_language_from_filename(request.option_filename);
+         return "";
+     }
+     
     diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
+    new file mode 100644
+    index 0000000..62277ee
+    Binary files /dev/null and b/code_analysis.o differ
     diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
+    new file mode 100755
+    index 0000000..d0e1f16
+    Binary files /dev/null and b/code_analysis_t differ
     diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
+    new file mode 100644
+    index 0000000..aa8dc9b
+    Binary files /dev/null and b/code_analysis_t.o differ
     diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
+    new file mode 100644
+    index 0000000..a9eb3bf
+    Binary files /dev/null and b/get_language_from_filename.o differ
     diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
+    new file mode 100755
+    index 0000000..66c703f
+    Binary files /dev/null and b/get_language_from_filename_t differ
     diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
-    deleted file mode 100644
-    index ffe97e2..0000000
-    Binary files a/get_language_from_filename_t.o and /dev/null differ
+    new file mode 100644
+    index 0000000..ffe97e2
+    Binary files /dev/null and b/get_language_from_filename_t.o differ
+
 
 ### Commit 52ec34
 % git checkout -q 52ec34  
 % make  
-error: The following untracked working tree files would be overwritten by checkout:
-	code_analysis_t
-	code_analysis_t.o
-	get_language_from_filename.o
-	get_language_from_filename_t
-	get_language_from_filename_t.o
-Please move or remove them before you switch branches.
-Aborting
 
-    make: Nothing to be done for `all'.
-
-% git show
-
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
-    
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
-    
-    diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
-    diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
-    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
-    deleted file mode 100644
-    index ffe97e2..0000000
-    Binary files a/get_language_from_filename_t.o and /dev/null differ
-
-### Commit 5f09cd
-% git checkout -q 5f09cd  
-% make  
-error: The following untracked working tree files would be overwritten by checkout:
-	code_analysis_t
-	get_language_from_filename.o
-	get_language_from_filename_t
-	get_language_from_filename_t.o
-Please move or remove them before you switch branches.
-Aborting
-
-    make: Nothing to be done for `all'.
-
-% git show
-
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
-    
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
-    
-    diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
-    diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
-    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
-    deleted file mode 100644
-    index ffe97e2..0000000
-    Binary files a/get_language_from_filename_t.o and /dev/null differ
-
-### Commit 4776cd
-% git checkout -q 4776cd  
-% make  
-error: The following untracked working tree files would be overwritten by checkout:
-	code_analysis_t
-	get_language_from_filename_t
-	get_language_from_filename_t.o
-Please move or remove them before you switch branches.
-Aborting
-
-    make: Nothing to be done for `all'.
-
-% git show
-
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
-    
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
-    
-    diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
-    diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
-    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
-    deleted file mode 100644
-    index ffe97e2..0000000
-    Binary files a/get_language_from_filename_t.o and /dev/null differ
-
-### Commit 5f306b
-% git checkout -q 5f306b  
-% make  
-error: The following untracked working tree files would be overwritten by checkout:
-	code_analysis_t
-	get_language_from_filename_t
-Please move or remove them before you switch branches.
-Aborting
-
-    make: Nothing to be done for `all'.
-
-% git show
-
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
-    
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
-    
-    diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
-    diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
-    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
-    deleted file mode 100644
-    index ffe97e2..0000000
-    Binary files a/get_language_from_filename_t.o and /dev/null differ
-
-### Commit 68bc82
-% git checkout -q 68bc82  
-% make  
-
-    g++ -std=c++11 -c code_analysis_t.cpp
     g++ -std=c++11 -c code_analysis.cpp
     g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    ld: warning: ignoring file code_analysis_t.o, file was built for unsupported file format ( 0x7F 0x45 0x4C 0x46 0x02 0x01 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 ) which is not the architecture being linked (x86_64): code_analysis_t.o
+    ld: warning: ignoring file get_language_from_filename.o, file was built for unsupported file format ( 0x7F 0x45 0x4C 0x46 0x02 0x01 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 ) which is not the architecture being linked (x86_64): get_language_from_filename.o
+    Undefined symbols for architecture x86_64:
+      "get_language_from_filename(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&)", referenced from:
+          analysis_filename(analysis_request const&) in code_analysis.o
+      "_main", referenced from:
+         implicit entry/start for main executable
+    ld: symbol(s) not found for architecture x86_64
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    make: *** [code_analysis_t] Error 1
 
 % git show
 
-    commit 68bc828043cacc08491a38b2c30990d5c46b6b29
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 11:05:56 2018 -0400
+    commit 52ec34cf96ef94964ab79b11f9c1d80f3fffd6e7
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:03:44 2018 -0400
     
-        Cleaned up error handling with test cases
+        Delete code_analysis.o
     
-    diff --git a/code_analysis.cpp b/code_analysis.cpp
-    index ffc8a02..2c34606 100644
-    --- a/code_analysis.cpp
-    +++ b/code_analysis.cpp
-    @@ -23,9 +23,9 @@ bool code_analysis(const analysis_request& request) {
-     
-         auto language = analysis_language(request, filename);
-         
-    -    if (language=="")
-    +    if (language=="" && get_language_from_filename(request.option_filename)=="")
-     		std::cerr << "Extension not supported" << std::endl;
-    -	if (filename=="")
-    +	if (filename=="" && language=="")
-     		std::cerr << "Using stdin requires a declared language" << std::endl;
-     
-         return false;
-    @@ -47,6 +47,8 @@ std::string analysis_filename(const analysis_request& request) {
-      */
-     std::string analysis_url(const analysis_request& request) {
-     
-    +	if (request.option_url!="")
-    +		return request.option_url;
-         return "";
-     }
-     
-    @@ -57,5 +59,7 @@ std::string analysis_url(const analysis_request& request) {
-      */
-     std::string analysis_language(const analysis_request& request, const std::string& filename) {
-     
-    +	if (request.option_language!="")
-    +		return request.option_language;
-         return "";
-     }
     diff --git a/code_analysis.o b/code_analysis.o
     deleted file mode 100644
     index 62277ee..0000000
     Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index d0e1f16..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.cpp b/code_analysis_t.cpp
-    index 820446d..1793bc0 100644
-    --- a/code_analysis_t.cpp
-    +++ b/code_analysis_t.cpp
-    @@ -6,6 +6,7 @@
-     
-     #include "code_analysis.hpp"
-     
-    +#include <iostream>
-     #include <string>
-     #include <cassert>
-     
-    @@ -26,6 +27,15 @@ int main() {
-             assert(analysis_url(request) == "");
-             assert(analysis_language(request, filename) == "");
-             assert(code_analysis(request) == false);
-    +        
-    +        // Garrett's Tests
-    +        std::cout << std::endl << "Separater for Collard's blank tests and my own..." << std::endl;
-    +        std::cout << "Incorrect: " << std::endl;
-    +        request.option_filename="bro.cweojre";
-    +        assert(code_analysis(request)==false);
-    +        std::cout << "Correct (no error messages): " << std::endl;
-    +        request.option_filename="bro.cpp";
-    +        assert(code_analysis(request)==false);
-         }
-     
-         return 0;
+
+
+### Commit 5f09cd
+% git checkout -q 5f09cd  
+% make  
+
+    g++ -std=c++11 -c code_analysis_t.cpp
+    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    ld: warning: ignoring file get_language_from_filename.o, file was built for unsupported file format ( 0x7F 0x45 0x4C 0x46 0x02 0x01 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 ) which is not the architecture being linked (x86_64): get_language_from_filename.o
+    Undefined symbols for architecture x86_64:
+      "get_language_from_filename(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&)", referenced from:
+          analysis_filename(analysis_request const&) in code_analysis.o
+    ld: symbol(s) not found for architecture x86_64
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    make: *** [code_analysis_t] Error 1
+
+% git show
+
+    commit 5f09cdf8e6886a78182a84baa71feb4036bc67e6
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:02 2018 -0400
+    
+        Delete code_analysis_t.o
+    
     diff --git a/code_analysis_t.o b/code_analysis_t.o
     deleted file mode 100644
     index aa8dc9b..0000000
     Binary files a/code_analysis_t.o and /dev/null differ
+
+
+### Commit 4776cd
+% git checkout -q 4776cd  
+% make  
+
+    g++ -std=c++11 -c get_language_from_filename.cpp
+    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    g++ get_language_from_filename_t.o get_language_from_filename.o -o get_language_from_filename_t
+    ld: warning: ignoring file get_language_from_filename_t.o, file was built for unsupported file format ( 0x7F 0x45 0x4C 0x46 0x02 0x01 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 ) which is not the architecture being linked (x86_64): get_language_from_filename_t.o
+    Undefined symbols for architecture x86_64:
+      "_main", referenced from:
+         implicit entry/start for main executable
+    ld: symbol(s) not found for architecture x86_64
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    make: *** [get_language_from_filename_t] Error 1
+
+% git show
+
+    commit 4776cd31e573cdf8a4fff5d2b689b880bd62b1ef
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:32 2018 -0400
+    
+        Delete get_language_from_filename.o
+    
     diff --git a/get_language_from_filename.o b/get_language_from_filename.o
     deleted file mode 100644
     index a9eb3bf..0000000
     Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
+
+
+### Commit 5f306b
+% git checkout -q 5f306b  
+% make  
+
+    g++ -std=c++11 -c get_language_from_filename_t.cpp
+    g++ get_language_from_filename_t.o get_language_from_filename.o -o get_language_from_filename_t
+
+% git show
+
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
+    
+        Delete get_language_from_filename_t.o
+    
     diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
     deleted file mode 100644
     index ffe97e2..0000000
     Binary files a/get_language_from_filename_t.o and /dev/null differ
 
-### Commit ce9a59
-% git checkout -q ce9a59  
+
+### Commit 68bc82
+% git checkout -q 68bc82  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
 
     make: Nothing to be done for `all'.
 
 % git show
 
-    commit ce9a5902f445b58f40dce2b6bcd70dcc88403c41
-    Merge: 68bc828 5f306b6
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 11:06:18 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Merge branch 'master' of https://github.com/ggm6/CodeAnalysisMetadata
+        Delete get_language_from_filename_t.o
     
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
+
+### Commit ce9a59
+% git checkout -q ce9a59  
+% make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+    make: Nothing to be done for `all'.
+
+% git show
+
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
+    
+        Delete get_language_from_filename_t.o
+    
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
 
 ### Commit 5d3a4f
 % git checkout -q 5d3a4f  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
 
-    g++ -std=c++11 -c code_analysis_t.cpp
-    g++ -std=c++11 -c code_analysis.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
-    commit 5d3a4f0aab92d88621baa78529ec2c1145a89023
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 11:38:28 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Testing and Implementation for analysis_filename complete
+        Delete get_language_from_filename_t.o
     
-    diff --git a/code_analysis.cpp b/code_analysis.cpp
-    index 2c34606..ac625d4 100644
-    --- a/code_analysis.cpp
-    +++ b/code_analysis.cpp
-    @@ -25,7 +25,7 @@ bool code_analysis(const analysis_request& request) {
-         
-         if (language=="" && get_language_from_filename(request.option_filename)=="")
-     		std::cerr << "Extension not supported" << std::endl;
-    -	if (filename=="" && language=="")
-    +	if (request.given_filename=="-" && filename=="" && language=="")
-     		std::cerr << "Using stdin requires a declared language" << std::endl;
-     
-         return false;
-    @@ -36,8 +36,13 @@ bool code_analysis(const analysis_request& request) {
-      * @retval filename
-      */
-     std::string analysis_filename(const analysis_request& request) {
-    -
-    -	return get_language_from_filename(request.option_filename);
-    +	
-    +	if (request.option_filename!="")
-    +		return get_language_from_filename(request.option_filename);
-    +	if (request.entry_filename=="data" && request.given_filename!="")
-    +		return get_language_from_filename(request.given_filename);
-    +	if (request.entry_filename!="")
-    +		return get_language_from_filename(request.entry_filename);
-         return "";
-     }
-     
-    diff --git a/code_analysis_t.cpp b/code_analysis_t.cpp
-    index 1793bc0..aec340c 100644
-    --- a/code_analysis_t.cpp
-    +++ b/code_analysis_t.cpp
-    @@ -36,6 +36,16 @@ int main() {
-             std::cout << "Correct (no error messages): " << std::endl;
-             request.option_filename="bro.cpp";
-             assert(code_analysis(request)==false);
-    +        std::cout << std::endl;
-    +        
-    +        std::cout << "Language from filename: " << std::endl;
-    +		std::cout << analysis_filename(request) << std::endl;
-    +		request.option_filename="";
-    +		request.entry_filename="data";
-    +		request.given_filename="howdy.c";
-    +		std::cout << analysis_filename(request) << std::endl;
-    +		request.entry_filename="me.java";
-    +		std::cout << analysis_filename(request) << std::endl;
-         }
-     
-         return 0;
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
 
 ### Commit 3be9ee
 % git checkout -q 3be9ee  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
 
-    g++ -std=c++11 -c code_analysis_t.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
-    commit 3be9ee064536e8a6240bc1783189e47bfef10f72
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 11:53:11 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Analysis_filename cleaned up
+        Delete get_language_from_filename_t.o
     
-    diff --git a/code_analysis.cpp b/code_analysis.cpp
-    index ac625d4..4575cdf 100644
-    --- a/code_analysis.cpp
-    +++ b/code_analysis.cpp
-    @@ -39,9 +39,9 @@ std::string analysis_filename(const analysis_request& request) {
-     	
-     	if (request.option_filename!="")
-     		return get_language_from_filename(request.option_filename);
-    -	if (request.entry_filename=="data" && request.given_filename!="")
-    +	if (request.option_filename=="" && request.entry_filename=="data" && request.given_filename!="")
-     		return get_language_from_filename(request.given_filename);
-    -	if (request.entry_filename!="")
-    +	if (request.option_filename=="" && request.entry_filename!="")
-     		return get_language_from_filename(request.entry_filename);
-         return "";
-     }
-    @@ -54,6 +54,8 @@ std::string analysis_url(const analysis_request& request) {
-     
-     	if (request.option_url!="")
-     		return request.option_url;
-    +	if (request.given_url!="" && request.option_url=="")
-    +		return request.given_url;
-         return "";
-     }
-     
-    diff --git a/code_analysis_t.cpp b/code_analysis_t.cpp
-    index aec340c..f080417 100644
-    --- a/code_analysis_t.cpp
-    +++ b/code_analysis_t.cpp
-    @@ -46,6 +46,8 @@ int main() {
-     		std::cout << analysis_filename(request) << std::endl;
-     		request.entry_filename="me.java";
-     		std::cout << analysis_filename(request) << std::endl;
-    +		
-    +		
-         }
-     
-         return 0;
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
 
 ### Commit 28cea5
 % git checkout -q 28cea5  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
 
-    g++ -std=c++11 -c code_analysis_t.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
-    commit 28cea5e8edbb54857b3385702870d872dba728c7
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:04:09 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Adding Testing and Implementation of analysis_url
+        Delete get_language_from_filename_t.o
     
-    diff --git a/code_analysis_t.cpp b/code_analysis_t.cpp
-    index f080417..0bc9b6e 100644
-    --- a/code_analysis_t.cpp
-    +++ b/code_analysis_t.cpp
-    @@ -29,7 +29,8 @@ int main() {
-             assert(code_analysis(request) == false);
-             
-             // Garrett's Tests
-    -        std::cout << std::endl << "Separater for Collard's blank tests and my own..." << std::endl;
-    +        std::cout << std::endl << "---Separater for Collard's blank tests and my own---" << std::endl;
-    +        std::cout << "code_analysis..." << std::endl;
-             std::cout << "Incorrect: " << std::endl;
-             request.option_filename="bro.cweojre";
-             assert(code_analysis(request)==false);
-    @@ -38,15 +39,23 @@ int main() {
-             assert(code_analysis(request)==false);
-             std::cout << std::endl;
-             
-    -        std::cout << "Language from filename: " << std::endl;
-    +        std::cout << "Language from filename..." << std::endl;
-     		std::cout << analysis_filename(request) << std::endl;
-     		request.option_filename="";
-     		request.entry_filename="data";
-     		request.given_filename="howdy.c";
-     		std::cout << analysis_filename(request) << std::endl;
-     		request.entry_filename="me.java";
-    -		std::cout << analysis_filename(request) << std::endl;
-    +		std::cout << analysis_filename(request) << std::endl << std::endl;
-     		
-    +		std::cout << "Url... " << std::endl;
-    +		request.given_url="https://github.com/ggm6/CodeAnalysisMetadata";
-    +		request.option_url="www.bro.com";
-    +		std::cout << "With option_url: " << std::endl;
-    +		std::cout << analysis_url(request) << std::endl;
-    +		request.option_url="";
-    +		std::cout << "Without option_url: " << std::endl;
-    +		std::cout << analysis_url(request) << std::endl;
-     		
-         }
-     
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
 
 ### Commit 3e12b4
 % git checkout -q 3e12b4  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+Please commit your changes or stash them before you switch branches.
 error: The following untracked working tree files would be overwritten by checkout:
 	code_analysis.o
-	code_analysis_t
 	code_analysis_t.o
 	get_language_from_filename.o
-	get_language_from_filename_t
 	get_language_from_filename_t.o
 Please move or remove them before you switch branches.
 Aborting
@@ -788,89 +571,37 @@ Aborting
 
 % git show
 
-    commit 28cea5e8edbb54857b3385702870d872dba728c7
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:04:09 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Adding Testing and Implementation of analysis_url
+        Delete get_language_from_filename_t.o
     
-    diff --git a/code_analysis_t.cpp b/code_analysis_t.cpp
-    index f080417..0bc9b6e 100644
-    --- a/code_analysis_t.cpp
-    +++ b/code_analysis_t.cpp
-    @@ -29,7 +29,8 @@ int main() {
-             assert(code_analysis(request) == false);
-             
-             // Garrett's Tests
-    -        std::cout << std::endl << "Separater for Collard's blank tests and my own..." << std::endl;
-    +        std::cout << std::endl << "---Separater for Collard's blank tests and my own---" << std::endl;
-    +        std::cout << "code_analysis..." << std::endl;
-             std::cout << "Incorrect: " << std::endl;
-             request.option_filename="bro.cweojre";
-             assert(code_analysis(request)==false);
-    @@ -38,15 +39,23 @@ int main() {
-             assert(code_analysis(request)==false);
-             std::cout << std::endl;
-             
-    -        std::cout << "Language from filename: " << std::endl;
-    +        std::cout << "Language from filename..." << std::endl;
-     		std::cout << analysis_filename(request) << std::endl;
-     		request.option_filename="";
-     		request.entry_filename="data";
-     		request.given_filename="howdy.c";
-     		std::cout << analysis_filename(request) << std::endl;
-     		request.entry_filename="me.java";
-    -		std::cout << analysis_filename(request) << std::endl;
-    +		std::cout << analysis_filename(request) << std::endl << std::endl;
-     		
-    +		std::cout << "Url... " << std::endl;
-    +		request.given_url="https://github.com/ggm6/CodeAnalysisMetadata";
-    +		request.option_url="www.bro.com";
-    +		std::cout << "With option_url: " << std::endl;
-    +		std::cout << analysis_url(request) << std::endl;
-    +		request.option_url="";
-    +		std::cout << "Without option_url: " << std::endl;
-    +		std::cout << analysis_url(request) << std::endl;
-     		
-         }
-     
+    diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
+    deleted file mode 100644
+    index ffe97e2..0000000
+    Binary files a/get_language_from_filename_t.o and /dev/null differ
+
 
 ### Commit 640df0
 % git checkout -q 640df0  
 % make  
+error: Your local changes to the following files would be overwritten by checkout:
+	code_analysis_t
+	get_language_from_filename_t
+Please commit your changes or stash them before you switch branches.
+Aborting
 
-    g++ -std=c++11 -c code_analysis_t.cpp
-    g++ -std=c++11 -c code_analysis.cpp
-    g++ code_analysis_t.o code_analysis.o get_language_from_filename.o -o code_analysis_t
+    make: Nothing to be done for `all'.
 
 % git show
 
-    commit 640df0252f3cd5be6760ba10760aeb34c3fa0a97
-    Author: Garrett <ggm6@zips.uakron.edu>
-    Date:   Fri Apr 6 12:28:23 2018 -0400
+    commit 5f306b6ad50246a17efaf3095781a8feb8f34245
+    Author: ggm6 <35551740+ggm6@users.noreply.github.com>
+    Date:   Fri Apr 6 11:04:58 2018 -0400
     
-        Testing and Implementation for analysis_language, as well as cleaned up analysis_filename
+        Delete get_language_from_filename_t.o
     
-    diff --git a/code_analysis.o b/code_analysis.o
-    deleted file mode 100644
-    index 1518ece..0000000
-    Binary files a/code_analysis.o and /dev/null differ
-    diff --git a/code_analysis_t b/code_analysis_t
-    deleted file mode 100755
-    index 1a81063..0000000
-    Binary files a/code_analysis_t and /dev/null differ
-    diff --git a/code_analysis_t.o b/code_analysis_t.o
-    deleted file mode 100644
-    index b8ba5d1..0000000
-    Binary files a/code_analysis_t.o and /dev/null differ
-    diff --git a/get_language_from_filename.o b/get_language_from_filename.o
-    deleted file mode 100644
-    index a9eb3bf..0000000
-    Binary files a/get_language_from_filename.o and /dev/null differ
-    diff --git a/get_language_from_filename_t b/get_language_from_filename_t
-    deleted file mode 100755
-    index 66c703f..0000000
-    Binary files a/get_language_from_filename_t and /dev/null differ
     diff --git a/get_language_from_filename_t.o b/get_language_from_filename_t.o
     deleted file mode 100644
     index ffe97e2..0000000
